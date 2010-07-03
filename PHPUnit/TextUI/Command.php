@@ -186,6 +186,7 @@ class PHPUnit_TextUI_Command
             PHPUnit_TextUI_TestRunner::printVersionString();
 
             $this->generateMakefile($suite);
+            print "Wrote Makefile for parallel test execution.\n";
 
             exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
         }
@@ -859,5 +860,23 @@ EOT;
      */
     protected function generateMakefile(PHPUnit_Framework_TestSuite $suite)
     {
+        $buffer = "tests : \n";
+
+        foreach ($suite as $test) {
+            $class = new ReflectionClass($test);
+            $file  = $class->getFileName();
+            $class = $class->getName();
+            $test  = $test->toString();
+
+            $buffer .= sprintf(
+              "\t\tphpunit --no-configuration --filter %s --log-junit %s.xml %s %s > /dev/null\n",
+              $test,
+              str_replace('::', '.', $test),
+              $class,
+              $file
+            );
+        }
+
+        file_put_contents('Makefile', $buffer);
     }
 }
