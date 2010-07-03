@@ -62,6 +62,7 @@ class PHPUnit_TextUI_Command
      * @var array
      */
     protected $arguments = array(
+      'generateMakefile'        => FALSE,
       'listGroups'              => FALSE,
       'loader'                  => NULL,
       'syntaxCheck'             => FALSE,
@@ -94,6 +95,7 @@ class PHPUnit_TextUI_Command
       'log-json=' => NULL,
       'log-junit=' => NULL,
       'log-tap=' => NULL,
+      'make' => NULL,
       'process-isolation' => NULL,
       'repeat=' => NULL,
       'skeleton-class' => NULL,
@@ -176,6 +178,14 @@ class PHPUnit_TextUI_Command
             foreach ($groups as $group) {
                 print " - $group\n";
             }
+
+            exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
+        }
+
+        if ($this->arguments['generateMakefile']) {
+            PHPUnit_TextUI_TestRunner::printVersionString();
+
+            $this->generateMakefile($suite);
 
             exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
         }
@@ -375,6 +385,11 @@ class PHPUnit_TextUI_Command
 
                 case '--log-tap': {
                     $this->arguments['tapLogfile'] = $option[1];
+                }
+                break;
+
+                case '--make': {
+                    $this->arguments['generateMakefile'] = TRUE;
                 }
                 break;
 
@@ -824,6 +839,8 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --include-path <path(s)> Prepend PHP's include_path with given path(s).
   -d key[=value]           Sets a php.ini value.
 
+  --make                   Generate Makefile for parallel test execution.
+
   --help                   Prints this usage information.
   --version                Prints the version and exits.
 
@@ -834,6 +851,13 @@ EOT;
      * Custom callback for test suite discovery.
      */
     protected function handleCustomTestSuite()
+    {
+    }
+
+    /**
+     * Generate Makefile for parallel test execution.
+     */
+    protected function generateMakefile(PHPUnit_Framework_TestSuite $suite)
     {
     }
 }

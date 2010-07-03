@@ -62,5 +62,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --include-path <path(s)> Prepend PHP's include_path with given path(s).
   -d key[=value]           Sets a php.ini value.
 
+  --make                   Generate Makefile for parallel test execution.
+
   --help                   Prints this usage information.
   --version                Prints the version and exits.
