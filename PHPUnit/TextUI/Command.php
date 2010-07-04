@@ -860,22 +860,28 @@ EOT;
      */
     protected function generateMakefile(PHPUnit_Framework_TestSuite $suite)
     {
-        $buffer = "tests : \n";
+        $buffer = '';
+        $tests  = '';
 
         foreach ($suite as $test) {
-            $class = new ReflectionClass($test);
-            $file  = $class->getFileName();
-            $class = $class->getName();
-            $test  = $test->toString();
+            $class  = new ReflectionClass($test);
+            $file   = $class->getFileName();
+            $class  = $class->getName();
+            $test   = $test->toString();
+            $_test  = str_replace('::', '-', $test);
+            $tests .= $_test . ' ';
 
             $buffer .= sprintf(
-              "\t\tphpunit --no-configuration --filter %s --log-junit %s.xml %s %s > /dev/null\n",
+              "%s : \n\t\tphpunit --no-configuration --filter %s --log-junit %s.xml %s %s > /dev/null\n",
+              $_test,
               $test,
-              str_replace('::', '.', $test),
+              $_test,
               $class,
               $file
             );
         }
+
+        $buffer = 'tests : ' . $tests . "\n" . $buffer;
 
         file_put_contents('Makefile', $buffer);
     }
