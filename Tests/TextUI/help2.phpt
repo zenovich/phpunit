@@ -46,6 +46,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --stop-on-failure        Stop execution upon first error or failure.
   --stop-on-skipped        Stop execution upon first skipped test.
   --stop-on-incomplete     Stop execution upon first incomplete test.
+  --strict                 Mark a test as incomplete if no assertions are made.
   --verbose                Output more verbose information.
   --wait                   Waits for a keystroke after each test.
 

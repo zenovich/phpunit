@@ -292,6 +292,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             );
         }
 
+        if ($arguments['strict']) {
+            $result->strictAssertions(TRUE);
+        }
+
         $suite->run(
           $result,
           $arguments['filter'],
@@ -519,6 +523,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($phpunitConfiguration['stopOnFailure']) &&
                 !isset($arguments['stopOnFailure'])) {
                 $arguments['stopOnFailure'] = $phpunitConfiguration['stopOnFailure'];
+            }
+
+            if (isset($phpunitConfiguration['strict']) &&
+                !isset($arguments['strict'])) {
+                $arguments['strict'] = $phpunitConfiguration['strict'];
             }
 
             if (isset($phpunitConfiguration['verbose']) &&
@@ -750,6 +759,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['stopOnFailure']               = isset($arguments['stopOnFailure'])               ? $arguments['stopOnFailure']               : FALSE;
         $arguments['stopOnIncomplete']            = isset($arguments['stopOnIncomplete'])            ? $arguments['stopOnIncomplete']            : FALSE;
         $arguments['stopOnSkipped']               = isset($arguments['stopOnSkipped'])               ? $arguments['stopOnSkipped']               : FALSE;
+        $arguments['strict']                      = isset($arguments['strict'])                      ? $arguments['strict']                      : FALSE;
         $arguments['verbose']                     = isset($arguments['verbose'])                     ? $arguments['verbose']                     : FALSE;
 
         if ($arguments['filter'] !== FALSE &&
